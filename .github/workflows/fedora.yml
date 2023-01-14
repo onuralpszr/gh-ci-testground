@@ -1,0 +1,11 @@
+
+name: CI
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  fedora-job:
+    runs-on: ubuntu-latest
+    container: fedora:37
+    steps:
+      - name: Get Fedora Release
+        run: cat /etc/os-release
