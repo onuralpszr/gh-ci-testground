@@ -1,0 +1,13 @@
+
+name: Fedora-Dnf-Test
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  fedora-job:
+    runs-on: ubuntu-latest
+    container: fedora:37
+    steps:
+      - name: Get Fedora Release
+        run: dnf update -y 
+      - name: Install copr-cli plugin
+        run: dnf install copr-cli
