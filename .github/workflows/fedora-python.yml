@@ -1,13 +1,12 @@
-
 name: Fedora-Dnf-Test
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  fedora-dnf-job:
+  fedora-python-tox:
     runs-on: ubuntu-latest
     container: fedora:37
     steps:
       - name: Fedora dnf update
         run: dnf update -y 
-      - name: Install copr-cli plugin
-        run: dnf install copr-cli -y
+      - name: Install tox
+        run: dnf install tox -y
