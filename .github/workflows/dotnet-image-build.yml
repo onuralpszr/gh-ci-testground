@@ -1,0 +1,14 @@
+name: DonetImageTest
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Pull GH Code
+          uses: actions/checkout@v3
+        - name: Build Docker image
+          run:  docker build -t test-dotnet-app -f dotnet-dockerfile .
+        - name: Docker Show images
+          run:  docker images
