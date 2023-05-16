@@ -1,0 +1,11 @@
+name: Docker Cli Test
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  docker-cli-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker pull image
+        run: docker pull fedora:latest 
+      - name: Docker show images
+        run: docker images
