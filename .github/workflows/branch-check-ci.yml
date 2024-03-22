@@ -26,5 +26,5 @@ jobs:
           echo "Branch is $branch."
       
       - name: Set output
-        if: ${{ steps.check_step.outputs.branch == 'main' }}
+        if: ${{ steps.check_step.outputs.branch }} == 'main'
         run: echo "Branch is main. passed"
