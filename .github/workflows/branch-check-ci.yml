@@ -27,7 +27,7 @@ jobs:
         run: |
           raw=$(git branch -r --contains ${{ github.ref }})
           branch="$(echo ${raw//origin\//} | tr -d '\n')"
-          echo "{name}=branch" >> $GITHUB_OUTPUT
+          echo "{name}=branch" >> $GITHUB_ENV
           echo "Branches where this tag exists : $branch."
 
   build-and-push-image:
