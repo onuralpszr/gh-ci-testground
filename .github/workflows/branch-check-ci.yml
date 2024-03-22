@@ -1,4 +1,4 @@
-name: Tag Example with branch check
+name: Tag Example with branch check action
 
 on:
   push:
