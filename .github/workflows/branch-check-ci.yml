@@ -16,19 +16,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get current b anch
+      - name: Get current branch
         id: check_step
         run: |
           raw=$(git branch -r --contains ${{ github.ref }})
           echo "raw is $raw"
           branch=${raw##*/}
-          echo "{name}=branch" >> $GITHUB_OUTPUT
+          echo "branch=$branch" >> $GITHUB_ENV
           echo "Branch is $branch."
-
-  job2:
-    runs-on: ubuntu-latest
-    needs: check
-    if: ${{ needs.check.outputs.branch == 'main' }}
-
-    steps:
-      - run: echo "Running task..."
+      
+      - name: Set output
+        if: ${{ steps.check_step.outputs.branch == 'main' }}
+        run: echo "Branch is main. passed"
