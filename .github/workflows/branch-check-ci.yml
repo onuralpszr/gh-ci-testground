@@ -7,39 +7,32 @@ on:
       - "*"
 
 jobs:
-  check:
+  # @see https://stackoverflow.com/a/72959712/8179249
+  check-current-branch:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.check_step.outputs.branch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Get branch name
-        id: branch
-        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
-      - name: Set branch name as output
-        id: set_branch
-        run: echo "The branch name is ${{ steps.branch.outputs.branch }}"
+
       - name: Get current branch
         id: check_step
+        # 1. Get the list of branches ref where this tag exists
+        # 2. Remove 'origin/' from that result
+        # 3. Put that string in output
+        # => We can now use function 'contains(list, item)''
         run: |
           raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw##*/}
+          branch="$(echo ${raw//origin\//} | tr -d '\n')"
           echo "{name}=branch" >> $GITHUB_OUTPUT
-          echo "Branch is $branch."
+          echo "Branches where this tag exists : $branch."
 
-  job1:
+  build-and-push-image:
     runs-on: ubuntu-latest
-    needs: check # Wait for check step to finish
-    steps:
-      - run: echo ${{ needs.check.outputs.branch}}
-
-  job2:
-    runs-on: ubuntu-latest
-    needs: check # Wait for check step to finish
-    if: ${{ needs.check.outputs.branch == 'main' }} # only run if branch is master
-
-    steps:
-      - run: echo "Running task..."
+    # Wait for check step to finish
+    needs: check-current-branch
+    # only run if tag is present on branch 'main'
+    if: contains(${{ needs.check.outputs.branch }}, 'main')`
