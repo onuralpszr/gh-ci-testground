@@ -17,12 +17,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
+      - name: Fetch all tags
+        run: git fetch --all --tags
+
+      - name: Show all tags
+        run: git tag -l
 
       - name: Get current branch
         id: check_step
         run: |
-          git fetch --all --tags
-          branch=$(git branch --contains tags/${{ github.ref }} | sed -n 1p | tr -d '[:space:]')
+          branch=$(git branch --contains ${{ github.ref }} | sed -n 1p | tr -d '[:space:]')
           echo "BRANCH_NAME=$branch" >> $GITHUB_ENV
           echo "Branches where this tag exists : $branch."
 
