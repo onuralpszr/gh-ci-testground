@@ -1,28 +1,33 @@
-# This only runs for tags, and the job only processes for "master" branch
 name: Tag Example with branch check
 
 on:
-  workflow_dispatch:
-
   push:
     tags:
       - "*"
 
-
 jobs:
-  check-current-branch:
+  check:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    outputs:
+      branch: ${{ steps.check_step.outputs.branch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
-      - name: Fetch all tags
-        run: git fetch --all --tags
 
-      - name: Show all tags
-        run: git tag -l
+      - name: Get current branch
+        id: check_step
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw##*/}
+          echo "{name}=branch" >> $GITHUB_OUTPUT
+          echo "Branch is $branch."
 
+  job2:
+    runs-on: ubuntu-latest
+    needs: check
+    if: ${{ needs.check.outputs.branch == 'main' }}
 
+    steps:
+      - run: echo "Running task..."
