@@ -5,16 +5,14 @@ on:
   workflow_dispatch:
 
   push:
-    branches:
-      - main
-    if: |
-      (startsWith(github.ref, 'refs/tags/')) || 
-      (!startsWith(github.ref, 'refs/tags/')
+    tags:
+      - "*"
 
 
 jobs:
   check-current-branch:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
