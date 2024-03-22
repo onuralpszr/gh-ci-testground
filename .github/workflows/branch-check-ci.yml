@@ -14,7 +14,7 @@ jobs:
       branch: ${{ steps.check_step.outputs.branch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -36,3 +36,7 @@ jobs:
     needs: check-current-branch
     # only run if tag is present on branch 'main'
     if: contains(${{ needs.check.outputs.branch }}, 'main')`
+    # echo the branch name
+    steps:
+      - name: Echo branch name
+        run: echo "Branch name is ${{ needs.check.outputs.branch }}"
