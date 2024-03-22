@@ -2,31 +2,29 @@
 name: Tag Example with branch check
 
 on:
+  workflow_dispatch:
+
   push:
-    tags:
-      - "*"
+    branches:
+      - main
+    if: |
+      (startsWith(github.ref, 'refs/tags/')) || 
+      (!startsWith(github.ref, 'refs/tags/')
+
 
 jobs:
-  # @see https://stackoverflow.com/a/72959712/8179249
   check-current-branch:
     runs-on: ubuntu-latest
-    outputs:
-      branch: ${{ steps.check_step.outputs.branch }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Get current branch
-        id: check_step
-        run: |
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch="$(echo ${raw//origin\//} | tr -d '\n')"
-          echo "{name}=branch" >> $GITHUB_ENV
-          echo "Branches where this tag exists : $branch."
       
-      - name: Echo if branch name is main
-        if: contains(${{ steps.check_step.outputs.branch }}, 'testbranch')
-        run: echo "Branch is main"
+      - name: Fetch all tags
+        run: git fetch --all --tags
+
+      - name: Show all tags
+        run: git tag -l
+
 
