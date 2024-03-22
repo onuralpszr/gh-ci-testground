@@ -28,5 +28,5 @@ jobs:
       
       - name: Echo if branch name is main
         if: contains(${{ steps.check_step.outputs.branch }}, 'testbranch')
-        run: echo "Branch is main"
+        run: echo "${{ steps.check_step.outputs.branch }}"
 
