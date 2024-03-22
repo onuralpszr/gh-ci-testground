@@ -18,13 +18,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get current branch
+      - name: Get current branchL
         id: check_step
-        run: |
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch="$(echo ${raw//origin\//} | tr -d '\n')"
-          echo "{name}=branch" >> $GITHUB_ENV
-          echo "Branches where this tag exists : $branch."
+        run: branch=$(git branch -r --contains ${{ github.ref }}) --format "%(refname:lstrip=3)"
+
       
       - name: Echo if branch name is main
         if: contains(${{ steps.check_step.outputs.branch }}, 'testbranch')
