@@ -16,10 +16,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get current branch
+      - name: Get current b anch
         id: check_step
         run: |
           raw=$(git branch -r --contains ${{ github.ref }})
+          echo "raw is $raw"
           branch=${raw##*/}
           echo "{name}=branch" >> $GITHUB_OUTPUT
           echo "Branch is $branch."
