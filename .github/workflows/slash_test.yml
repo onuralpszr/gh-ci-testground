@@ -1,0 +1,24 @@
+name: Test slash commands 
+
+on:
+  issue_comment:
+    types: [created]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.issue.number || github.ref }}
+    cancel-in-progress: true
+
+jobs:
+  backend-ci-job:
+    if: startsWith(github.event.comment.body, '/start') && github.event.issue.pull_request
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Extract number
+      id: extract-number
+      run: |
+        NUMBER=$(echo "${{ github.event.comment.body }}" | awk -F' ' '{print $2}')
+        echo "::set-output name=number::$NUMBER"
+
+    - name: Extract number2
+      run: echo "::set-output name=number::$NUMBER"
