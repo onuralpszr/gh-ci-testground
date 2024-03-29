@@ -9,7 +9,7 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-  backend-ci-job:
+  ci-job:
     if: startsWith(github.event.comment.body, '/start') && github.event.issue.pull_request
     runs-on: ubuntu-latest
 
@@ -22,3 +22,17 @@ jobs:
 
     - name: Extract number2
       run: echo "::set-output name=number::$NUMBER"
+      
+    - name: Comment number to related issue
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const issue_number = context.issue.number;
+          const number = "${{ steps.extract-number.outputs.number }}";
+          const message = `The extracted number is ${number}`;
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issue_number,
+            body: message
+          });
