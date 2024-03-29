@@ -1,2 +1,3 @@
-# gh-ci-testground
-This repo for experimenting github actions 
+# Github Action Testground
+
+This repo for experimenting GitHub actions 
