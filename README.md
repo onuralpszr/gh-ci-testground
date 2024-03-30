@@ -1,3 +1,3 @@
 # Github Action Testground
 
-This repo for experimenting GitHub actions 
+This repo for experimenting GitHub actions.
