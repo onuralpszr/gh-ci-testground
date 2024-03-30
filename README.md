@@ -1,3 +1,5 @@
-# Github Action Testground
+# Github Action Test ground
 
-This repo for experimenting GitHub actions.
+
+This repo is for experimenting with GitHub actions.
+
