@@ -1,0 +1,30 @@
+name: Releases to mkdocs gh-pages
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+[0-9]+.[0-9]'
+
+  workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: 🛎️ Checkout
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ github.head_ref }}
+
+        # get the latest tag at push
+        - name: Get the latest tag
+          id: get_tag
+          run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_STATE
+
+        # echo the tag
+        - name: Echo the tag
+          run: cat $GITHUB_STATE | grep tag | cut -d '=' -f2
+
+        # echo the tag
+        - name: Echo the tag
+          run: echo "$(git describe --tags --abbrev=0)"
+
