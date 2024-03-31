@@ -2,7 +2,7 @@ name: Releases to mkdocs gh-pages
 on:
   push:
     tags:
-      - 'v+[0-9]+.[0-9]+[0-9]+.[0-9]'
+      - '[0-9]+.[0-9]+[0-9]+.[0-9]'
 
   workflow_dispatch:
 
@@ -13,7 +13,7 @@ jobs:
         - name: 🛎️ Checkout
           uses: actions/checkout@v4
           with:
-            ref: ${{ github.head_ref }}
+            fetch-depth: 0
 
         # get the latest tag at push
         - name: Get the latest tag
